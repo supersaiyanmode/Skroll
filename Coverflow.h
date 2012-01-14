@@ -9,8 +9,8 @@
 class Coverflow{
     std::vector<Tile*> tiles;
     TextureManager tm;
-    std::vector<Vector3D> tileLocations;
-    int currentPosition;
+    std::vector<std::vector<Vector3D> > tileOrientations;
+    int currentPosition,nextPosition,direction;
 public:
     Coverflow();
     void initialise();
