@@ -50,7 +50,6 @@ TextureManager::~TextureManager(){
 }
 
 TextureManager::TextureManager():glTextureEnabled(false){
-    std::cout<<"TM CTOR!"<<std::endl;
 }
 
 void TextureManager::clear(){
