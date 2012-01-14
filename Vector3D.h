@@ -2,14 +2,17 @@
 #define VECTOR3D_H
 
 #include <vector>
-struct Vector3D{
-    double x,y,z;
-    
+#include <iostream>
+
+class Vector3D{
+    double array[3];
+    double &x,&y,&z;
+public:
     Vector3D();
     Vector3D(double,double,double);
     Vector3D(const std::vector<double>&);
     
-    void normalise();
+    Vector3D& normalise();
     double magnitude() const;
     
     Vector3D operator+(const Vector3D&);
@@ -17,7 +20,12 @@ struct Vector3D{
     Vector3D operator*(const Vector3D&);
     Vector3D operator-();
     
-    double& operator[](int);
+    double const& operator[] (unsigned) const;
+    double& operator[] (unsigned); 
+    
+    Vector3D& operator=(const Vector3D&);
+    
+    friend std::ostream& operator<<(std::ostream&, const Vector3D&);
 };
 
 #endif //VECTOR3D_H

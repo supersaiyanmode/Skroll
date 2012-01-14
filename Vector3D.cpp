@@ -1,44 +1,58 @@
 #include <cmath>
-#include <iostream>
 #include "Vector3D.h"
 
-Vector3D::Vector3D():x(0.0),y(0.0),z(0.0){}
-Vector3D::Vector3D(double x_,double y_,double z_):x(x_), y(y_), z(z_){}
-Vector3D::Vector3D(const std::vector<double>& v):x(v[0]), y(v[1]), z(v[2]){}
+Vector3D::Vector3D():x(array[0]), y(array[1]), z(array[2]){
+    for (int i=0; i<3; array[i++]=0);
+}
+Vector3D::Vector3D(double x_,double y_,double z_):x(array[0]), y(array[1]), z(array[2]){
+    array[0] = x_;
+    array[1] = y_;
+    array[2] = z_;
+}
+Vector3D::Vector3D(const std::vector<double>& v):x(array[0]), y(array[1]), z(array[2]){
+    for (int i=0; i<3; i++)
+        array[i]=v[i];
+}
+Vector3D& Vector3D::operator=(const Vector3D& other){
+    for (int i=0; i<3; i++)
+        array[i]=other.array[i];
+    return *this;
+}
 
-void Vector3D::normalise(){
+Vector3D& Vector3D::normalise(){
     double mag = magnitude();
-    x /= mag;
-    y /= mag;
-    z /= mag;
+    for (int i=0; i<3; i++)
+        array[i]/=mag;
+    return *this;
 }
 
 double Vector3D::magnitude() const{
-    return std::sqrt(x*x + y*y + z*z);
+    return std::sqrt(array[0]*array[0] + array[1]*array[1] + array[2]*array[2]);
 }
     
 Vector3D Vector3D::operator+(const Vector3D& other){
-    return Vector3D(x+other.x, y+other.y, z+other.z);
+    return Vector3D(array[0]+other.array[0], array[1]+other.array[1], array[2]+other.array[2]);
 }
 
 Vector3D Vector3D::operator-(const Vector3D& other){
-    return Vector3D(x-other.x, y-other.y, z-other.z);
+    return Vector3D(array[0]-other.array[0], array[1]-other.array[1], array[2]-other.array[2]);
 }
 
-double& Vector3D::operator[](int index){
-    switch(index){
-        case 0: return x;
-        case 1: return y;
-        case 2: return z;
-    }
-    std::cout<<"All the best!"<<std::endl;
-    //let it segfault here.
+double const& Vector3D::operator[](unsigned index) const{
+    return array[index];
+}
+double& Vector3D::operator[] (unsigned index){
+    return array[index];
 }
 
 Vector3D Vector3D::operator*(const Vector3D& other){
-    return Vector3D(y*other.z-z*other.y, z*other.x-x*other.z, x*other.y-y*other.x);
+    return Vector3D(array[1]*other.array[2]-array[2]*other.array[1], array[2]*other.array[0]-array[0]*other.array[2], array[0]*other.array[1]-array[1]*other.array[0]);
 }
 
 Vector3D Vector3D::operator-(){
-    return Vector3D(-x,-y,-z);
+    return Vector3D(-array[0],-array[1],-array[2]);
+}
+
+std::ostream& operator<<(std::ostream& out, const Vector3D& v){
+    return out<<"("<<v[0]<<","<<v[1]<<","<<v[2]<<")";
 }

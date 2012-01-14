@@ -25,6 +25,10 @@ void PictureTile::paint(){
         std::cout<<"TextureManager not set.\n";
         exit(1);
     }
+    static int i=0;
+    if (!i++){
+        std::cout<<"["<<points[0]<<","<<points[1]<<","<<points[2]<<","<<points[3]<<"]"<<std::endl;
+    }
     t->bindFilename(fileName);
     glBegin(GL_QUADS);
         glNormal3dv(&normal[0]);
