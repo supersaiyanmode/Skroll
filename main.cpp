@@ -5,7 +5,7 @@
 void paint(Coverflow& cf){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
-    gluLookAt(0,0,4, 0,0,0, 0,1,0);
+    gluLookAt(0,2,5, 0,0,0, 0,1,0);
 #if 0
     static double angle = 0.0;
     glRotated(angle,0,1,0);

@@ -27,7 +27,7 @@ void PictureTile::paint(){
     }
     static int i=0;
     if (!i++){
-        std::cout<<"["<<points[0]<<","<<points[1]<<","<<points[2]<<","<<points[3]<<"]"<<std::endl;
+        //std::cout<<"["<<points[0]<<","<<points[1]<<","<<points[2]<<","<<points[3]<<"]"<<std::endl;
     }
     t->bindFilename(fileName);
     glBegin(GL_QUADS);

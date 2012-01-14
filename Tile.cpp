@@ -13,10 +13,10 @@ void Tile::setTextureManager(TextureManager*t){
     tm = t;
 }
 
-void Tile::setOrientation(std::vector<double> loc, std::vector<double> facing, std::vector<double> upVector){
-    location = Vector3D(loc);
-    normal = (Vector3D(facing) - location).normalise();
-    up = normal*(Vector3D(upVector).normalise()*normal); //fix this up!
+void Tile::setOrientation(Vector3D loc, Vector3D facing, Vector3D upVector){
+    location = loc;
+    normal = (facing - location).normalise();
+    up = normal*(upVector.normalise()*normal);
     
     Vector3D topMidPoint = location+up;
     Vector3D bottomMidPoint = location-up;

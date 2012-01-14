@@ -25,7 +25,7 @@ public:
     TextureManager* getTextureManager();
     void setTextureManager(TextureManager*);
     
-    void setOrientation(std::vector<double>, std::vector<double>, std::vector<double>);
+    void setOrientation(Vector3D, Vector3D, Vector3D);
     
     virtual void paint() = 0;
     virtual void initialise()=0;
