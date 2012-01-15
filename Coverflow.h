@@ -11,10 +11,12 @@ class Coverflow{
     TextureManager tm;
     std::vector<std::vector<Vector3D> > tileOrientations;
     int currentPosition,nextPosition,direction;
+    int length;
 public:
     Coverflow();
     void initialise();
     void paint();
+    void scroll(int);
     ~Coverflow();
 };
 

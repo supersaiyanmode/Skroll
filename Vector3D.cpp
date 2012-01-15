@@ -30,11 +30,11 @@ double Vector3D::magnitude() const{
     return std::sqrt(array[0]*array[0] + array[1]*array[1] + array[2]*array[2]);
 }
     
-Vector3D Vector3D::operator+(const Vector3D& other){
+Vector3D Vector3D::operator+(const Vector3D& other) const{
     return Vector3D(array[0]+other.array[0], array[1]+other.array[1], array[2]+other.array[2]);
 }
 
-Vector3D Vector3D::operator-(const Vector3D& other){
+Vector3D Vector3D::operator-(const Vector3D& other) const{
     return Vector3D(array[0]-other.array[0], array[1]-other.array[1], array[2]-other.array[2]);
 }
 
@@ -45,14 +45,26 @@ double& Vector3D::operator[] (unsigned index){
     return array[index];
 }
 
-Vector3D Vector3D::operator*(const Vector3D& other){
+Vector3D Vector3D::operator*(const Vector3D& other) const{
     return Vector3D(array[1]*other.array[2]-array[2]*other.array[1], array[2]*other.array[0]-array[0]*other.array[2], array[0]*other.array[1]-array[1]*other.array[0]);
 }
 
-Vector3D Vector3D::operator-(){
+Vector3D Vector3D::operator*(double other) const{
+    return Vector3D(other*array[0], other*array[1], other*array[2]);
+}
+
+Vector3D Vector3D::operator-() const{
     return Vector3D(-array[0],-array[1],-array[2]);
 }
 
 std::ostream& operator<<(std::ostream& out, const Vector3D& v){
     return out<<"("<<v[0]<<","<<v[1]<<","<<v[2]<<")";
+}
+
+Vector3D Vector3D::getRatioVector(const Vector3D& v1, const Vector3D& v2, double ratio){
+    if (ratio > 1.0)
+        ratio = 1.0;
+    if (ratio < 0.0)
+        ratio = 0.0;
+    return v1 + (v2-v1)*ratio;
 }

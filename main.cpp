@@ -39,9 +39,13 @@ int main(){
     
     while (running){
         paint(cf);
-        Thread<Coverflow,int>::sleep(20);
+        Thread<Coverflow,int>::sleep(100);
         
         running = glfwGetKey('Q')!=GLFW_PRESS;
+        int leftKey = glfwGetKey('A')==GLFW_PRESS, rightKey = glfwGetKey('D')==GLFW_PRESS;
+        if (leftKey ^ rightKey){
+            cf.scroll(leftKey? -1: 1);
+        }
     }
     
     glfwTerminate();
