@@ -22,7 +22,7 @@ protected:
     Vector3D location,normal,up;
 public:
     Tile();
-    TextureManager* getTextureManager();
+    TextureManager* getTextureManager() const;
     void setTextureManager(TextureManager*);
     
     void setOrientation(Vector3D, Vector3D, Vector3D);

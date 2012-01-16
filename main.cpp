@@ -1,4 +1,5 @@
 #include <GL/glfw.h>
+#include <cmath>
 #include "Coverflow.h"
 #include "Thread.cpp"
 
@@ -6,11 +7,6 @@ void paint(Coverflow& cf){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
     gluLookAt(0,0,5, 0,0,0, 0,1,0);
-#if 0
-    static double angle = 0.0;
-    glRotated(angle,0,1,0);
-    angle += 1;
-#endif
     cf.paint();
     glfwSwapBuffers();
 }

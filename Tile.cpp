@@ -5,7 +5,7 @@ Tile::Tile():tm(0),aspectRatio(1.0),points(4,Vector3D()), border(4,Vector3D()){
     
 }
 
-TextureManager* Tile::getTextureManager(){
+TextureManager* Tile::getTextureManager() const{
     return tm;
 }
 
@@ -13,9 +13,9 @@ void Tile::setTextureManager(TextureManager*t){
     tm = t;
 }
 
-void Tile::setOrientation(Vector3D loc, Vector3D facing, Vector3D upVector){
+void Tile::setOrientation(Vector3D loc, Vector3D dir, Vector3D upVector){
     location = loc;
-    normal = (facing - location).normalise();
+    normal = dir.normalise();
     up = normal*(upVector.normalise()*normal);
     
     Vector3D topMidPoint = location+up;
