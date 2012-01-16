@@ -10,7 +10,7 @@ void Coverflow::initialise(){
     double face[]= {0,0,1};
     double  up[] = {0,1,0};
     
-    length = 7;
+    length = 17;
     currentPosition = length-1;
     nextPosition = length/2;
     //nextPosition = currentPosition;
@@ -43,7 +43,7 @@ void Coverflow::initialise(){
 
 void Coverflow::paint(){
     static double progress = 0.0;
-    const double incrementProgress = 0.1;
+    static double incrementProgress = 0.05;
     if (direction){
         if (nextPosition == currentPosition)
             progress = incrementProgress;

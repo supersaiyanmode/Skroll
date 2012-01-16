@@ -35,7 +35,7 @@ int main(){
     
     while (running){
         paint(cf);
-        Thread<Coverflow,int>::sleep(100);
+        Thread<Coverflow,int>::sleep(10);
         
         running = glfwGetKey('Q')!=GLFW_PRESS;
         int leftKey = glfwGetKey('A')==GLFW_PRESS, rightKey = glfwGetKey('D')==GLFW_PRESS;
