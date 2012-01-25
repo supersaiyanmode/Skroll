@@ -1,7 +1,7 @@
 #include "Tile.h"
 #include <iostream>
 
-Tile::Tile():tm(0),aspectRatio(1.0),points(4,Vector3D()), border(4,Vector3D()){
+Tile::Tile():tm(0),points(4,Vector3D()), border(4,Vector3D()){
     
 }
 

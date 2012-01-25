@@ -1,4 +1,5 @@
 #include "PictureTile.h"
+#include "soil/SOIL.h"
 #include <iostream>
 
 PictureTile::PictureTile(const std::string& filename):fileName(filename){
@@ -12,11 +13,12 @@ void PictureTile::initialise(){
         exit(1);
     }
     t->addTexture(fileName,"");
+    SOIL_last_image_dimensions(&width, &height);
     normal[0] = 0; normal[1] = 0; normal[2] = -1.0;
-    points[0][0] = -1.0; points[0][1] =  1.0; points[0][2] =  0.0; 
-    points[1][0] =  1.0; points[1][1] =  1.0; points[1][2] =  0.0; 
-    points[2][0] =  1.0; points[2][1] = -1.0; points[2][2] =  0.0; 
-    points[3][0] = -1.0; points[3][1] = -1.0; points[3][2] =  0.0; 
+    points[0][0] = -1.0; points[0][1] =  1.0; points[0][2] =  0.0;
+    points[1][0] =  1.0; points[1][1] =  1.0; points[1][2] =  0.0;
+    points[2][0] =  1.0; points[2][1] = -1.0; points[2][2] =  0.0;
+    points[3][0] = -1.0; points[3][1] = -1.0; points[3][2] =  0.0;
 }
 
 void PictureTile::paint(){
@@ -24,10 +26,6 @@ void PictureTile::paint(){
     if (!t){
         std::cout<<"TextureManager not set.\n";
         exit(1);
-    }
-    static int i=0;
-    if (!i++){
-        //std::cout<<"["<<points[0]<<","<<points[1]<<","<<points[2]<<","<<points[3]<<"]"<<std::endl;
     }
     t->bindFilename(fileName);
     glBegin(GL_QUADS);

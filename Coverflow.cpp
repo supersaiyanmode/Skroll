@@ -7,13 +7,17 @@ Coverflow::Coverflow():currentPosition(0),nextPosition(0),direction(0){
 }
 
 void Coverflow::initialise(){
-    double face[]= {0,0,1};
-    double  up[] = {0,1,0};
+    //add the tiles..
+    SingleImageTilePopulator s(tm,"e.bmp",10);
+    s.populate();
+    tiles = s.get();
     
-    length = 17;
+    
+    length = s.size();
     currentPosition = length-1;
     nextPosition = length/2;
     //nextPosition = currentPosition;
+    
     
     for (int x=-length+1; x<=length-1; x++){
         if (x){
@@ -30,15 +34,28 @@ void Coverflow::initialise(){
             tileOrientations.push_back(std::vector<Vector3D>(arr,arr+3));
         }
     }
-    for (int i=0; i<length; i++){
-        tiles.push_back(new PictureTile("e.bmp"));
-    }
+    
     for (int i=0,len=tiles.size(); i<len; i++){
         tiles[i]->setTextureManager(&tm);
         tiles[i]->initialise();
         tiles[i]->setOrientation(tileOrientations[currentPosition+i][0],
             tileOrientations[currentPosition+i][1],tileOrientations[currentPosition+i][2]);
     }
+    
+    return;
+    //set up lighting..
+    GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+    GLfloat mat_shininess[] = { 50.0 };
+    GLfloat light_position[] = { 0.0, 0.0, 10.0, 0.0 };
+    glClearColor (0.0, 0.0, 0.0, 0.0);
+    glShadeModel (GL_SMOOTH);
+
+    glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+    glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
 }
 
 void Coverflow::paint(){
@@ -85,8 +102,96 @@ void Coverflow::scroll(int dir){
     direction = dir;
 }
 
+void Coverflow::setCamera(std::vector<double>* c){
+    camera = c;
+    double arr[] = {0,0,5, 0,0,0, 0,1,0};
+    *camera = std::vector<double>(arr,arr+9);
+}
+
 Coverflow::~Coverflow(){
     for (std::vector<Tile*>::iterator it = tiles.begin(); it  != tiles.end(); it++){
         delete *it;
     }
+}
+
+
+//############ COOLIRIS #########################
+
+Cooliris::Cooliris():rows(3),direction(0){
+    
+}
+
+void Cooliris::initialise(){
+    SingleImageTilePopulator s(tm,"e.bmp",270);
+    s.populate();
+    tiles = s.get();
+    
+    
+    int length = s.size(), cols = length%3? length/3+1:length/3;
+    double gap = 0.1;
+    //-4.4 -2.2 0 2.2 4.4
+    std::vector<double> vertPos;
+    for (int i=rows/2; i>=-rows/2; i--){ //only odd no of rows as of now..
+        vertPos.push_back(i*2*(1.0+gap));
+    }
+
+    for (int i=0; i<length; i++){
+        Vector3D up(0,1,0);
+        Vector3D dir(0,0,1);
+        Vector3D loc((i/rows)*2*(1+gap),vertPos[i%rows],0);
+        Vector3D arr[] = {loc,dir,up};
+        tileOrientations.push_back(std::vector<Vector3D>(arr,arr+3));
+    }
+    maxHorizPos = tileOrientations[length-1][0][0];
+    std::cout<<"Max Horiz Pos: "<<Cooliris::maxHorizPos<<std::endl;
+    
+    for (int i=0,len=tiles.size(); i<len; i++){
+        tiles[i]->setTextureManager(&tm);
+        tiles[i]->initialise();
+        tiles[i]->setOrientation(tileOrientations[i][0],tileOrientations[i][1],
+                        tileOrientations[i][2]);
+    }
+}
+void Cooliris::paint(){
+    static double progress = 0.0;
+    static double incrementProgress = 0.05;
+    
+    if (direction){
+        curHorizLookAt += direction/5.0;
+        if (curHorizLookAt < 0.5){
+            curHorizLookAt = 0.5;
+        }
+        if (curHorizLookAt > Cooliris::maxHorizPos){
+            curHorizLookAt = Cooliris::maxHorizPos;
+        }
+        direction = 0;
+    }
+    if (std::abs(curHorizLookAt-curHorizPos) > 1e-2){
+        curHorizPos += curHorizLookAt > curHorizPos? 0.1 : -0.1;
+        
+        double arr[] = {curHorizPos,0,8,curHorizLookAt,0,0,0,1,0};
+        *camera = std::vector<double>(arr,arr+9);
+    }
+    
+    for (int i=0,len=tiles.size(); i<len; i++){
+        tiles[i]->setOrientation(tileOrientations[i][0],tileOrientations[i][1],
+                        tileOrientations[i][2]);
+        tiles[i]->paint();
+    }
+}
+void Cooliris::setCamera(std::vector<double>* c){
+    camera = c;
+    double arr[] = {0.5,0,8,0.5,0,0, 0,1,0};
+    *camera = std::vector<double>(arr,arr+9);
+    curHorizLookAt = curHorizPos = 0.5;
+}
+
+void Cooliris::scroll(int dir){
+    direction = dir;
+}
+
+Cooliris::~Cooliris(){
+    for (std::vector<Tile*>::iterator it = tiles.begin(); it  != tiles.end(); it++){
+        delete *it;
+    }    
 }

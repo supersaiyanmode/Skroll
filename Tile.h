@@ -17,7 +17,7 @@
 class Tile{
     TextureManager* tm;
 protected:
-    double aspectRatio;
+    int width, height;
     std::vector<Vector3D> points,border;
     Vector3D location,normal,up;
 public:
@@ -26,6 +26,7 @@ public:
     void setTextureManager(TextureManager*);
     
     void setOrientation(Vector3D, Vector3D, Vector3D);
+    void resize();
     
     virtual void paint() = 0;
     virtual void initialise()=0;

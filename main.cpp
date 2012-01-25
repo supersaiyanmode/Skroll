@@ -3,11 +3,18 @@
 #include "Coverflow.h"
 #include "Thread.cpp"
 
-void paint(Coverflow& cf){
+void paint(TileDisplay& td){
+    static int init;
+    static std::vector<double> cameraParams;
+    if (!init++){
+        td.setCamera(&cameraParams);
+    }
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
-    gluLookAt(0,0,5, 0,0,0, 0,1,0);
-    cf.paint();
+    gluLookAt(cameraParams[0],cameraParams[1],cameraParams[2],
+              cameraParams[3],cameraParams[4],cameraParams[5],
+              cameraParams[6],cameraParams[7],cameraParams[8]);
+    td.paint();
     glfwSwapBuffers();
 }
 
@@ -21,8 +28,9 @@ int main(){
     glEnable(GL_DEPTH_TEST);
     
         
-    Coverflow cf;
+    Cooliris cf;
     cf.initialise();
+    //std::cout<<cf.maxHorizPos<<std::endl;
     
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();

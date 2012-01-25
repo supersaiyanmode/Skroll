@@ -41,6 +41,9 @@
 /*	error reporting	*/
 char *result_string_pointer = "SOIL initialized";
 
+/*      global dimensions */
+int last_Image_Width, last_Image_Height;
+
 /*	for loading cube maps	*/
 enum{
 	SOIL_CAPABILITY_UNKNOWN = -1,
@@ -105,6 +108,7 @@ unsigned int
 	);
 
 /*	and the code magic begins here [8^)	*/
+
 unsigned int
 	SOIL_load_OGL_texture
 	(
@@ -116,7 +120,7 @@ unsigned int
 {
 	/*	variables	*/
 	unsigned char* img;
-	int width, height, channels;
+	int channels;
 	unsigned int tex_id;
 	/*	does the user want direct uploading of the image as a DDS file?	*/
 	if( flags & SOIL_FLAG_DDS_LOAD_DIRECT )
@@ -133,7 +137,7 @@ unsigned int
 		}
 	}
 	/*	try to load the image	*/
-	img = SOIL_load_image( filename, &width, &height, &channels, force_channels );
+	img = SOIL_load_image( filename, &last_Image_Width, &last_Image_Height, &channels, force_channels );
 	/*	channels holds the original number of channels, which may have been forced	*/
 	if( (force_channels >= 1) && (force_channels <= 4) )
 	{
@@ -147,7 +151,7 @@ unsigned int
 	}
 	/*	OK, make it a texture!	*/
 	tex_id = SOIL_internal_create_OGL_texture(
-			img, width, height, channels,
+			img, last_Image_Width, last_Image_Height, channels,
 			reuse_texture_ID, flags,
 			GL_TEXTURE_2D, GL_TEXTURE_2D,
 			GL_MAX_TEXTURE_SIZE );
@@ -2021,4 +2025,10 @@ int query_DXT_capability( void )
 	}
 	/*	let the user know if we can do DXT or not	*/
 	return has_DXT_capability;
+}
+
+
+void SOIL_last_image_dimensions(int *w, int* h){
+    *w = last_Image_Width;
+    *h = last_Image_Height;
 }

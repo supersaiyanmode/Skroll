@@ -425,9 +425,12 @@ const char*
 		void
 	);
 
+void SOIL_last_image_dimensions(int *w, int* h);
 
 #ifdef __cplusplus
 }
 #endif
+
+
 
 #endif /* HEADER_SIMPLE_OPENGL_IMAGE_LIBRARY	*/
