@@ -2,6 +2,7 @@
 #include <cmath>
 #include "Coverflow.h"
 #include "Thread.cpp"
+#include "FileLister.h"
 
 void paint(TileDisplay& td){
     static int init;
@@ -39,7 +40,6 @@ int main(){
     glEnable(GL_TEXTURE_2D);
         
     bool running = true;
-    char keys[256] = {0};
     
     while (running){
         paint(cf);

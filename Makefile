@@ -3,7 +3,7 @@ CCOMPILER=gcc
 FLAGS=-Wall -g -O3
 LIBRARIES=`pkg-config --libs libglfw` -lm -lGLU -lGL -lXrandr
 UNITS=obj/main.o obj/TextureManager.o obj/Thread.o obj/Tile.o obj/PictureTile.o obj/Coverflow.o obj/Vector3D.o \
-	obj/TilePopulator.o
+	obj/TilePopulator.o obj/FileLister.o
 SOIL_DEPENDS=soil/image_DXT.c  soil/image_helper.c  soil/SOIL.c  soil/stbi_DDS_aug_c.h  soil/stb_image_aug.c \
 		soil/image_DXT.h  soil/image_helper.h  soil/SOIL.h  soil/stbi_DDS_aug.h  soil/stb_image_aug.h
 SOIL_UNITS=obj/soil/image_DXT.o obj/soil/image_helper.o obj/soil/SOIL.o soil/stb_image_aug.o

@@ -122,16 +122,15 @@ Cooliris::Cooliris():rows(3),direction(0){
 }
 
 void Cooliris::initialise(){
-    SingleImageTilePopulator s(tm,"e.bmp",270);
+    FolderImageTilePopulator s(tm,".");
     s.populate();
     tiles = s.get();
     
     
-    int length = s.size(), cols = length%3? length/3+1:length/3;
+    int length = s.size();
     double gap = 0.1;
-    //-4.4 -2.2 0 2.2 4.4
     std::vector<double> vertPos;
-    for (int i=rows/2; i>=-rows/2; i--){ //only odd no of rows as of now..
+    for (int i=rows/2; i>=-rows/2; i--){
         vertPos.push_back(i*2*(1.0+gap));
     }
 
@@ -143,7 +142,6 @@ void Cooliris::initialise(){
         tileOrientations.push_back(std::vector<Vector3D>(arr,arr+3));
     }
     maxHorizPos = tileOrientations[length-1][0][0];
-    std::cout<<"Max Horiz Pos: "<<Cooliris::maxHorizPos<<std::endl;
     
     for (int i=0,len=tiles.size(); i<len; i++){
         tiles[i]->setTextureManager(&tm);
@@ -153,11 +151,13 @@ void Cooliris::initialise(){
     }
 }
 void Cooliris::paint(){
-    static double progress = 0.0;
-    static double incrementProgress = 0.05;
+    //cameraMove => steps taken by camera to come to rest to the point of lookAt
+    //userMove => lookat Point steps
+    
+    static double cameraMove = 0.1, userMove = 5.0;
     
     if (direction){
-        curHorizLookAt += direction/5.0;
+        curHorizLookAt += direction/userMove;
         if (curHorizLookAt < 0.5){
             curHorizLookAt = 0.5;
         }
@@ -166,8 +166,9 @@ void Cooliris::paint(){
         }
         direction = 0;
     }
+    (std::cout<<".").flush();
     if (std::abs(curHorizLookAt-curHorizPos) > 1e-2){
-        curHorizPos += curHorizLookAt > curHorizPos? 0.1 : -0.1;
+        curHorizPos += curHorizLookAt > curHorizPos? cameraMove : -cameraMove;
         
         double arr[] = {curHorizPos,0,8,curHorizLookAt,0,0,0,1,0};
         *camera = std::vector<double>(arr,arr+9);
